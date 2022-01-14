@@ -6,7 +6,8 @@ import (
 )
 
 const (
-	port = "8080"
+	iface = "localhost"
+	port  = "8080"
 )
 
 func main() {
@@ -14,5 +15,5 @@ func main() {
 		rw.WriteHeader(http.StatusServiceUnavailable)
 		rw.Write([]byte("under development"))
 	})
-	http.ListenAndServe(fmt.Sprintf(":%s", port), nil)
+	http.ListenAndServe(fmt.Sprintf("%s:%s", iface, port), nil)
 }
