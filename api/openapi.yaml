@@ -1,0 +1,14 @@
+openapi: "3.0.0"
+info:
+  version: 0.1.0
+  title: whatsapp2
+  license:
+    name: MIT
+servers:
+  - url: /api/v1
+paths:
+  /:
+    get:
+      responses:
+        503:
+          description: Not implemented
