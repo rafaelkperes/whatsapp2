@@ -1,8 +1,10 @@
+import { Flex, Text } from "@chakra-ui/react";
+
 const Header: React.FC = () => {
   return (
-    <header>
-      <h3>Header</h3>
-    </header>
+    <Flex as="header">
+      <Text as="h3">Header</Text>
+    </Flex>
   );
 };
 

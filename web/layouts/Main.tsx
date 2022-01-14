@@ -1,12 +1,13 @@
 import React from "react";
 import Head from "next/head";
+import { Flex } from "@chakra-ui/react";
 
 const Main: React.FC<{ children: React.ReactNode; pageTitle: string }> = ({
   children,
   pageTitle,
 }) => {
   return (
-    <main>
+    <Flex as="main" direction="column">
       <Head>
         <title>{pageTitle}</title>
         <meta
@@ -16,7 +17,7 @@ const Main: React.FC<{ children: React.ReactNode; pageTitle: string }> = ({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {children}
-    </main>
+    </Flex>
   );
 };
 
