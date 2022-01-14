@@ -14,3 +14,20 @@ const Page: NextPage = () => {
 
 export default Page;
 ```
+
+> Generic Component Structure Sample
+
+```typescript
+import React from "react";
+import Flex from "@chakra-ui/react";
+
+const Component: React.FC<{ props: PropTypes }> = ({ props }) => {
+  return (
+    <Flex as="section">
+      <Text>PAGE_CONTENT</Text>
+    </Flex>
+  );
+};
+
+export default Component;
+```
