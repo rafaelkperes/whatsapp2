@@ -10,6 +10,10 @@ run: build
 
 test:
 	go test ./...
+	go test -race ./...
+
+lint:
+	golanci-lint run
 
 clean:
 	go clean
