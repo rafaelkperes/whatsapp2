@@ -13,7 +13,7 @@ test:
 	go test -race ./...
 
 lint:
-	golanci-lint run
+	golangci-lint run
 
 clean:
 	go clean

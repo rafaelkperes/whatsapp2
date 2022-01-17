@@ -13,8 +13,7 @@ func TestLocalTokenStore(t *testing.T) {
 	lts := NewLocalTokenStore()
 
 	// ensure it implements the required interface
-	var ts TokenStore
-	ts = lts
+	var ts TokenStore = lts
 
 	info, ok := ts.Get("new-token")
 	rq.False(ok)
