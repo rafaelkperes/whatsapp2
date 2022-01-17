@@ -41,6 +41,9 @@ func (lcs *LocalCredentialStore) Register(id string, password string) error {
 }
 
 func (lcs *LocalCredentialStore) Match(id string, password string) bool {
+	if _, ok := lcs.m[id]; !ok {
+		return false
+	}
 	return bcrypt.CompareHashAndPassword(lcs.m[id], []byte(password)) == nil
 }
 

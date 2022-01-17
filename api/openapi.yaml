@@ -5,10 +5,67 @@ info:
   license:
     name: MIT
 servers:
-  - url: /api/v1
+  - url: http://localhost:8080/api/v1
 paths:
-  /:
-    get:
+  /auth/login:
+    post:
+      requestBody:
+        description: Optional description in *Markdown*
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginInfo'
       responses:
-        503:
-          description: Not implemented
+        200:
+          description: Login successful, session token in response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SessionInfo"
+        400:
+          description: Invalid username or password
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /auth/register:
+    post:
+      responses:
+        201:
+          description: Registration successful
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    LoginInfo:
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    SessionInfo:
+      required:
+        - token
+      properties:
+        token:
+          type: string
+    Error:
+      required:
+        - message
+      properties:
+        message:
+          type: string

@@ -34,7 +34,7 @@ func (r *authRouter) handleLogin(rw http.ResponseWriter, rq *http.Request) {
 	}
 
 	if !r.creds.Match(reqBody.Username, reqBody.Password) {
-		newErrorMessage(http.StatusBadRequest, "invalid username or password")
+		newErrorMessage(http.StatusBadRequest, "invalid username or password").Write(rw)
 		return
 	}
 
@@ -42,5 +42,24 @@ func (r *authRouter) handleLogin(rw http.ResponseWriter, rq *http.Request) {
 	token := r.tokens.Add(reqBody.Username)
 	respBody.Token = token
 	rw.WriteHeader(http.StatusOK)
-	json.NewEncoder(rw).Encode(rw)
+	json.NewEncoder(rw).Encode(respBody)
+}
+
+func (r *authRouter) handleRegister(rw http.ResponseWriter, rq *http.Request) {
+	var reqBody struct {
+		Username string `json:"username"`
+		Password string `json:"password"`
+	}
+
+	if err := json.NewDecoder(rq.Body).Decode(&reqBody); err != nil {
+		newErrorMessage(http.StatusBadRequest, err.Error()).Write(rw)
+		return
+	}
+
+	if err := r.creds.Register(reqBody.Username, reqBody.Password); err != nil {
+		newErrorMessage(http.StatusInternalServerError, err.Error()).Write(rw)
+		return
+	}
+
+	rw.WriteHeader(http.StatusCreated)
 }

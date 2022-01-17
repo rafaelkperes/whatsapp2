@@ -21,6 +21,6 @@ func newErrorMessage(code int, message string) errorMessage {
 func (e errorMessage) Write(w http.ResponseWriter) {
 	w.WriteHeader(e.Code)
 	if err := json.NewEncoder(w).Encode(e); err != nil {
-		log.Println("Error writing response body: %s", err)
+		log.Printf("Error writing response body: %s", err)
 	}
 }
