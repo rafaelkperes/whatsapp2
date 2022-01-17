@@ -8,25 +8,23 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-type UserID string
-
 type CredentialStore interface {
-	Register(id UserID, password string) error
-	Match(id UserID, password string) bool
+	Register(id string, password string) error
+	Match(id string, password string) bool
 }
 
 type LocalCredentialStore struct {
 	rwm sync.RWMutex
-	m   map[UserID][]byte
+	m   map[string][]byte
 }
 
 func NewLocalCredentialStore() *LocalCredentialStore {
 	return &LocalCredentialStore{
-		m: make(map[UserID][]byte),
+		m: make(map[string][]byte),
 	}
 }
 
-func (lcs *LocalCredentialStore) Register(id UserID, password string) error {
+func (lcs *LocalCredentialStore) Register(id string, password string) error {
 	lcs.rwm.Lock()
 	defer lcs.rwm.Unlock()
 	if _, ok := lcs.m[id]; ok {
@@ -42,7 +40,7 @@ func (lcs *LocalCredentialStore) Register(id UserID, password string) error {
 	return nil
 }
 
-func (lcs *LocalCredentialStore) Match(id UserID, password string) bool {
+func (lcs *LocalCredentialStore) Match(id string, password string) bool {
 	return bcrypt.CompareHashAndPassword(lcs.m[id], []byte(password)) == nil
 }
 

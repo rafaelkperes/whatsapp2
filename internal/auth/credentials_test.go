@@ -13,15 +13,15 @@ func TestLocalCredentialStore(t *testing.T) {
 	t.Run("EmptyStore", func(t *testing.T) {
 		rq := require.New(t)
 		cs := NewLocalCredentialStore()
-		rq.False(cs.Match(UserID("foo"), "bar"))
-		rq.False(cs.Match(UserID("foo"), ""))
-		rq.False(cs.Match(UserID("foo"), "#$%ˆ&*("))
+		rq.False(cs.Match("foo", "bar"))
+		rq.False(cs.Match("foo", ""))
+		rq.False(cs.Match("foo", "#$%ˆ&*("))
 	})
 
 	t.Run("AlreadyExists", func(t *testing.T) {
 		rq := require.New(t)
 		cs := NewLocalCredentialStore()
-		id := UserID("id")
+		id := "id"
 		rq.NoError(cs.Register(id, "foobar"))
 		rq.Error(cs.Register(id, "foobar"))
 	})
@@ -29,12 +29,12 @@ func TestLocalCredentialStore(t *testing.T) {
 	t.Run("MultipleUsers", func(t *testing.T) {
 		rq := require.New(t)
 		cs := NewLocalCredentialStore()
-		id := UserID("id")
+		id := "id"
 		rq.NoError(cs.Register(id, "foobar"))
 		rq.True(cs.Match(id, "foobar"))
 		rq.False(cs.Match(id, "foobaz"))
 
-		id2 := UserID("id2")
+		id2 := "id2"
 		rq.NoError(cs.Register(id2, "foobaz"))
 		rq.True(cs.Match(id2, "foobaz"))
 		rq.False(cs.Match(id2, "foobar"))
