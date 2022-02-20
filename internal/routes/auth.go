@@ -2,6 +2,7 @@ package routes
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 
 	"github.com/rafaelkperes/whatsapp2/internal/auth"
@@ -42,7 +43,9 @@ func (r *authRouter) handleLogin(rw http.ResponseWriter, rq *http.Request) {
 	token := r.tokens.Add(reqBody.Username)
 	respBody.Token = token
 	rw.WriteHeader(http.StatusOK)
-	json.NewEncoder(rw).Encode(respBody)
+	if err := json.NewEncoder(rw).Encode(respBody); err != nil {
+		log.Printf("Error writing response body: %s", err)
+	}
 }
 
 func (r *authRouter) handleRegister(rw http.ResponseWriter, rq *http.Request) {

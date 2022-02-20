@@ -16,7 +16,15 @@ func writeResponseError(w http.ResponseWriter, code int, message string) {
 		Code:    code,
 		Message: message,
 	}
-	if err := json.NewEncoder(w).Encode(e); err != nil {
+	logWriteError(json.NewEncoder(w).Encode(e))
+}
+
+func logWriteSizeError(_ int, err error) {
+	logWriteError(err)
+}
+
+func logWriteError(err error) {
+	if err != nil {
 		log.Printf("Error writing response body: %s", err)
 	}
 }

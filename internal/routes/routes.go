@@ -26,7 +26,7 @@ func CreateHandler() http.Handler {
 
 	helloHandler := func(rw http.ResponseWriter, rq *http.Request) {
 		token := TokenInfoFromContext(rq.Context()).(string)
-		rw.Write([]byte(fmt.Sprintf("Hello, %s!", token)))
+		logWriteSizeError(rw.Write([]byte(fmt.Sprintf("Hello, %s!", token))))
 	}
 
 	h.Handle("/hello", swf.SessionWrapperFunc(helloHandler))
