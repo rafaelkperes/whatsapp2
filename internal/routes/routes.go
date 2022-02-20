@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -23,12 +24,13 @@ func CreateHandler() http.Handler {
 		Methods(http.MethodPost)
 
 	/// Example usage of the session wrapper:
-	// swf := newSessionWrapperFactory(tokenStore)
-	// helloHandler := func(rw http.ResponseWriter, rq *http.Request) {
-	// 	token := TokenInfoFromContext(rq.Context()).(string)
-	// 	logWriteSizeError(rw.Write([]byte(fmt.Sprintf("Hello, %s!", token))))
-	// }
-	// h.Handle("/hello", swf.SessionWrapperFunc(helloHandler))
+	// Remove the helloHandler (and the '/hello' route once we have actual endpoints that require auth)
+	swf := newSessionWrapperFactory(tokenStore)
+	helloHandler := func(rw http.ResponseWriter, rq *http.Request) {
+		token := TokenInfoFromContext(rq.Context()).(string)
+		logWriteSizeError(rw.Write([]byte(fmt.Sprintf("Hello, %s!", token))))
+	}
+	h.Handle("/hello", swf.SessionWrapperFunc(helloHandler))
 
 	return h
 }
