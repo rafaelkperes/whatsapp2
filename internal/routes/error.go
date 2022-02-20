@@ -6,20 +6,16 @@ import (
 	"net/http"
 )
 
-type errorMessage struct {
-	Code    int    `json:"-"`
-	Message string `json:"message"`
-}
+func writeResponseError(w http.ResponseWriter, code int, message string) {
+	w.WriteHeader(code)
 
-func newErrorMessage(code int, message string) errorMessage {
-	return errorMessage{
+	e := struct {
+		Code    int    `json:"code"`
+		Message string `json:"message"`
+	}{
 		Code:    code,
 		Message: message,
 	}
-}
-
-func (e errorMessage) Write(w http.ResponseWriter) {
-	w.WriteHeader(e.Code)
 	if err := json.NewEncoder(w).Encode(e); err != nil {
 		log.Printf("Error writing response body: %s", err)
 	}

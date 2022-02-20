@@ -29,12 +29,12 @@ func (r *authRouter) handleLogin(rw http.ResponseWriter, rq *http.Request) {
 	}
 
 	if err := json.NewDecoder(rq.Body).Decode(&reqBody); err != nil {
-		newErrorMessage(http.StatusBadRequest, err.Error()).Write(rw)
+		writeResponseError(rw, http.StatusBadRequest, err.Error())
 		return
 	}
 
 	if !r.creds.Match(reqBody.Username, reqBody.Password) {
-		newErrorMessage(http.StatusBadRequest, "invalid username or password").Write(rw)
+		writeResponseError(rw, http.StatusBadRequest, "invalid username or password")
 		return
 	}
 
@@ -52,12 +52,12 @@ func (r *authRouter) handleRegister(rw http.ResponseWriter, rq *http.Request) {
 	}
 
 	if err := json.NewDecoder(rq.Body).Decode(&reqBody); err != nil {
-		newErrorMessage(http.StatusBadRequest, err.Error()).Write(rw)
+		writeResponseError(rw, http.StatusBadRequest, err.Error())
 		return
 	}
 
 	if err := r.creds.Register(reqBody.Username, reqBody.Password); err != nil {
-		newErrorMessage(http.StatusInternalServerError, err.Error()).Write(rw)
+		writeResponseError(rw, http.StatusInternalServerError, err.Error())
 		return
 	}
 

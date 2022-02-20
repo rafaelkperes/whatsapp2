@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -8,9 +9,13 @@ import (
 )
 
 func CreateHandler() http.Handler {
+	credStore := auth.NewLocalCredentialStore()
+	tokenStore := auth.NewLocalTokenStore()
+	swf := newSessionWrapperFactory(tokenStore)
+
 	h := &handler{
 		Router:     mux.NewRouter().PathPrefix("/api/v1").Subrouter(),
-		authRouter: newAuthRouter(auth.NewLocalCredentialStore(), auth.NewLocalTokenStore()),
+		authRouter: newAuthRouter(credStore, tokenStore),
 	}
 
 	r := h.PathPrefix("/auth").Subrouter()
@@ -18,6 +23,14 @@ func CreateHandler() http.Handler {
 		Methods(http.MethodPost)
 	r.HandleFunc("/register", h.authRouter.handleRegister).
 		Methods(http.MethodPost)
+
+	helloHandler := func(rw http.ResponseWriter, rq *http.Request) {
+		token := TokenInfoFromContext(rq.Context()).(string)
+		rw.Write([]byte(fmt.Sprintf("Hello, %s!", token)))
+	}
+
+	h.Handle("/hello", swf.SessionWrapperFunc(helloHandler))
+
 	return h
 }
 
