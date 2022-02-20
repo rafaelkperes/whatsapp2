@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -11,7 +10,6 @@ import (
 func CreateHandler() http.Handler {
 	credStore := auth.NewLocalCredentialStore()
 	tokenStore := auth.NewLocalTokenStore()
-	swf := newSessionWrapperFactory(tokenStore)
 
 	h := &handler{
 		Router:     mux.NewRouter().PathPrefix("/api/v1").Subrouter(),
@@ -24,12 +22,13 @@ func CreateHandler() http.Handler {
 	r.HandleFunc("/register", h.authRouter.handleRegister).
 		Methods(http.MethodPost)
 
-	helloHandler := func(rw http.ResponseWriter, rq *http.Request) {
-		token := TokenInfoFromContext(rq.Context()).(string)
-		logWriteSizeError(rw.Write([]byte(fmt.Sprintf("Hello, %s!", token))))
-	}
-
-	h.Handle("/hello", swf.SessionWrapperFunc(helloHandler))
+	/// Example usage of the session wrapper:
+	// swf := newSessionWrapperFactory(tokenStore)
+	// helloHandler := func(rw http.ResponseWriter, rq *http.Request) {
+	// 	token := TokenInfoFromContext(rq.Context()).(string)
+	// 	logWriteSizeError(rw.Write([]byte(fmt.Sprintf("Hello, %s!", token))))
+	// }
+	// h.Handle("/hello", swf.SessionWrapperFunc(helloHandler))
 
 	return h
 }
