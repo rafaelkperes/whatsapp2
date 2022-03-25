@@ -1,9 +1,16 @@
 import { Flex, Text } from "@chakra-ui/react";
+import { MessageType } from "../../interface/MessageType";
+import { UserType } from "../../interface/UserType";
 
-const Chat: React.FC<{ user: any }> = ({ user }) => {
-  const userLastMessage = new Date(user.messages[0].createdAt)
+const Chat: React.FC<{
+  chatId: string;
+  user: UserType;
+  messages: MessageType[];
+}> = ({ chatId, user, messages }) => {
+  const userLastMessage = new Date(messages[0].createdAt)
     .toLocaleString()
     .slice(12, 17);
+
   return (
     <Flex
       as="section"
@@ -16,7 +23,7 @@ const Chat: React.FC<{ user: any }> = ({ user }) => {
         <Text as="h3" fontSize="xl">
           {user.username}
         </Text>
-        <Text>{user.messages[0].content}</Text>
+        <Text>{messages[0].content}</Text>
       </Flex>
       <Text as="h3" fontSize="xl">
         {userLastMessage}

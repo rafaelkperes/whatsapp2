@@ -4,22 +4,10 @@ import LoginForm from "../components/auth/loginForm";
 import ChatList from "../components/chat/chatList";
 import Header from "../components/header";
 import Main from "../layouts/Main";
-import { UserType } from "../interface/UserType";
+import useStore, { user } from "../store";
 
 const Home: NextPage = () => {
-  const user: UserType = {
-    uid: "asd123",
-    username: "cptvictor",
-    name: "Victor Cardoso Pudo Torres",
-    messages: [
-      {
-        uid: "qwe123",
-        content: "Message content",
-        createdAt: Date.now(),
-        userId: "asd123",
-      },
-    ],
-  };
+  const { chatList, chatMessages } = useStore();
 
   return (
     <Main pageTitle="Home">
@@ -31,15 +19,20 @@ const Home: NextPage = () => {
           borderRight="1px solid #bbb"
         >
           <Header />
-          <ChatList user={user} />
+          <ChatList user={user} chatList={chatList} />
         </Flex>
         <Flex as="section" w="70vw" align="center" justify="center">
           {!user ? (
             <LoginForm />
           ) : (
-            <Text as="h2" fontSize="3xl">
-              WhatsApp 2
-            </Text>
+            <>
+              <Text as="h2" fontSize="3xl">
+                WhatsApp 2
+              </Text>
+              {chatMessages.messages.map((message) => (
+                <Text key={message.uid}>{message.content}</Text>
+              ))}
+            </>
           )}
         </Flex>
       </Flex>
