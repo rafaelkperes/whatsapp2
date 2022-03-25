@@ -10,6 +10,10 @@ run: build
 
 test:
 	go test ./...
+	go test -race ./...
+
+lint:
+	golangci-lint run
 
 clean:
 	go clean
