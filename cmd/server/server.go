@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+
+	"github.com/rafaelkperes/whatsapp2/internal/routes"
 )
 
 const (
@@ -12,13 +14,8 @@ const (
 )
 
 func main() {
-	http.HandleFunc("/", func(rw http.ResponseWriter, r *http.Request) {
-		rw.WriteHeader(http.StatusServiceUnavailable)
-		_, err := rw.Write([]byte("under development"))
-		if err != nil {
-			log.Printf("Error writing response body: %s", err)
-		}
-	})
+	http.Handle("/", routes.CreateHandler())
+
 	if err := http.ListenAndServe(fmt.Sprintf("%s:%s", iface, port), nil); err != nil {
 		log.Fatal(err)
 	}
