@@ -2,31 +2,25 @@ import { Flex, Text } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import LoginForm from "../components/auth/loginForm";
 import ChatList from "../components/chat/chatList";
+import ChatMessages from "../components/chat/chatMessages";
 import Header from "../components/header";
+import { ChatType } from "../interface/ChatType";
 import Main from "../layouts/Main";
-<<<<<<< HEAD
-import useStore, { user } from "../store";
+import useStore from "../store";
+import { user1 } from "../mocks";
+import useChatStore from "../useChatStore";
 
 const Home: NextPage = () => {
-  const { chatList, chatMessages } = useStore();
-=======
-import { UserType } from "../interface/UserType";
+  const { chatList } = useStore();
+  const { isOpen, chatId } = useChatStore();
 
-const Home: NextPage = () => {
-  const user: UserType = {
-    uid: "asd123",
-    username: "cptvictor",
-    name: "Victor Cardoso Pudo Torres",
-    messages: [
-      {
-        uid: "qwe123",
-        content: "Message content",
-        createdAt: Date.now(),
-        userId: "asd123",
-      },
-    ],
+  const findChat = (chatList: ChatType[]) => {
+    return chatList.map((chat) => {
+      if (chat.uid === chatId) {
+        return <ChatMessages chat={chat} />;
+      }
+    });
   };
->>>>>>> a6e8a8892d2d30b03e323ff7adb91b5fa3503d97
 
   return (
     <Main pageTitle="Home">
@@ -38,37 +32,24 @@ const Home: NextPage = () => {
           borderRight="1px solid #bbb"
         >
           <Header />
-<<<<<<< HEAD
-          <ChatList user={user} chatList={chatList} />
-=======
-          <ChatList user={user} />
->>>>>>> a6e8a8892d2d30b03e323ff7adb91b5fa3503d97
+          <ChatList chatList={chatList} />
         </Flex>
         <Flex as="section" w="70vw" align="center" justify="center">
-          {!user ? (
+          {!user1 ? (
             <LoginForm />
           ) : (
-<<<<<<< HEAD
             <>
-              <Text as="h2" fontSize="3xl">
-                WhatsApp 2
-              </Text>
-              {chatMessages.messages.map((message) => (
-                <Text key={message.uid}>{message.content}</Text>
-              ))}
+              {isOpen ? (
+                findChat(chatList)
+              ) : (
+                <Text as="h2" fontSize="3xl">
+                  WhatsApp 2
+                </Text>
+              )}
             </>
           )}
         </Flex>
       </Flex>
-=======
-            <Text as="h2" fontSize="3xl">
-              WhatsApp 2
-            </Text>
-          )}
-        </Flex>
-      </Flex>
-
->>>>>>> a6e8a8892d2d30b03e323ff7adb91b5fa3503d97
     </Main>
   );
 };
