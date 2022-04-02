@@ -31,3 +31,26 @@ const Component: React.FC<{ props: PropTypes }> = ({ props }) => {
 
 export default Component;
 ```
+
+> Generic Zustand Store Sample
+
+```typescript
+import create from "zustand";
+
+export type ValueStore = {
+  value: any;
+  setValue: () => void;
+};
+
+const useValueStore = create<ValueStore>((set) => ({
+  value,
+  setValue: () => {
+    set((state) => ({
+      ...state,
+      value: state.value,
+    }));
+  },
+}));
+
+export default useValueStore;
+```

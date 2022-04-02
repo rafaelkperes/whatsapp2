@@ -7,7 +7,7 @@ const Main: React.FC<{ children: React.ReactNode; pageTitle: string }> = ({
   pageTitle,
 }) => {
   return (
-    <Flex as="main" direction="column">
+    <Flex as="main" direction="column" h="100%">
       <Head>
         <title>{pageTitle}</title>
         <meta

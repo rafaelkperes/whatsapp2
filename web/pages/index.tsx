@@ -1,24 +1,25 @@
 import { Flex, Text } from "@chakra-ui/react";
 import type { NextPage } from "next";
-import LoginForm from "../components/auth/loginForm";
-import ChatList from "../components/chat/chatList";
+import LoginForm from "../components/auth/LoginForm";
+import ChatList from "../components/chat/ChatList";
+import ChatMessages from "../components/chat/ChatMessages";
 import Header from "../components/header";
+import { ChatType } from "../interface/ChatType";
 import Main from "../layouts/Main";
-import { UserType } from "../interface/UserType";
+import useStore from "../stores/store";
+import { user1 } from "../mocks";
+import useChatStore from "../stores/useChatStore";
 
 const Home: NextPage = () => {
-  const user: UserType = {
-    uid: "asd123",
-    username: "cptvictor",
-    name: "Victor Cardoso Pudo Torres",
-    messages: [
-      {
-        uid: "qwe123",
-        content: "Message content",
-        createdAt: Date.now(),
-        userId: "asd123",
-      },
-    ],
+  const { chatList } = useStore();
+  const { isOpen, chatId } = useChatStore();
+
+  const findChat = (chatList: ChatType[]) => {
+    return chatList.map((chat) => {
+      if (chat.uid === chatId) {
+        return <ChatMessages chat={chat} />;
+      }
+    });
   };
 
   return (
@@ -31,19 +32,24 @@ const Home: NextPage = () => {
           borderRight="1px solid #bbb"
         >
           <Header />
-          <ChatList user={user} />
+          <ChatList chatList={chatList} />
         </Flex>
         <Flex as="section" w="70vw" align="center" justify="center">
-          {!user ? (
+          {!user1 ? (
             <LoginForm />
           ) : (
-            <Text as="h2" fontSize="3xl">
-              WhatsApp 2
-            </Text>
+            <>
+              {isOpen ? (
+                findChat(chatList)
+              ) : (
+                <Text as="h2" fontSize="3xl">
+                  WhatsApp 2
+                </Text>
+              )}
+            </>
           )}
         </Flex>
       </Flex>
-
     </Main>
   );
 };

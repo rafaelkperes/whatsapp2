@@ -1,5 +1,7 @@
 import {
   Button,
+  Center,
+  Container,
   Flex,
   FormControl,
   FormErrorMessage,
@@ -27,74 +29,77 @@ const LoginForm = () => {
   };
 
   return (
-    <Flex
-      as="form"
-      direction="column"
-      border="1px solid #ddd"
-      borderRadius="10px"
-      py={12}
-      px={16}
-      onSubmit={handleSubmit(onLogin)}
-    >
-      <Text as="h2" fontSize="3xl" textAlign="center" pb={4}>
-        Login
-      </Text>
-      <FormControl isInvalid={errors.username}>
-        <FormLabel
-          htmlFor="username"
-          color={!errors.username ? "black" : "red"}
+    <Center as="form" h="100vh" onSubmit={handleSubmit(onLogin)}>
+      <Container centerContent p={8}>
+        <Text as="h2" fontSize="4xl" py={4}>
+          Login
+        </Text>
+        <FormControl isInvalid={errors.email}>
+          <FormLabel htmlFor="email" color={!errors.email ? "black" : "red"}>
+            Email
+          </FormLabel>
+          <Input
+            type="text"
+            borderColor="#ddd"
+            mb={!errors.email ? 7 : 0}
+            minW="250px"
+            placeholder="email@email.com"
+            {...register("email", { required: "Email is missing." })}
+          />
+          <FormErrorMessage>
+            {errors.email && errors.email.message}
+          </FormErrorMessage>
+        </FormControl>
+        <FormControl isInvalid={errors.password}>
+          <FormLabel
+            htmlFor="password"
+            color={!errors.password ? "black" : "red"}
+          >
+            Password
+          </FormLabel>
+          <Input
+            type="password"
+            borderColor="#ddd"
+            mb={!errors.password ? 7 : 0}
+            minW="250px"
+            placeholder="********"
+            {...register("password", {
+              required: "Password is missing.",
+              minLength: {
+                value: 8,
+                message: "Password too short.",
+              },
+              maxLength: {
+                value: 16,
+                message: "Password too long.",
+              },
+            })}
+          />
+          <FormErrorMessage>
+            {errors.password && errors.password.message}
+          </FormErrorMessage>
+        </FormControl>
+        <Button alignSelf="flex-end" variant="link" mb={4}>
+          Esqueceu sua senha?
+        </Button>
+        <Button
+          w="100%"
+          textTransform="uppercase"
+          my={4}
+          type="submit"
+          isDisabled={!isValid}
+          isLoading={isLoading}
         >
-          Username
-        </FormLabel>
-        <Input
-          type="text"
-          borderColor="#ddd"
-          mb={!errors.username ? 7 : 0}
-          minW="250px"
-          {...register("username", { required: "Username is missing." })}
-        />
-        <FormErrorMessage>
-          {errors.username && errors.username.message}
-        </FormErrorMessage>
-      </FormControl>
-      <FormControl isInvalid={errors.password}>
-        <FormLabel
-          htmlFor="password"
-          color={!errors.password ? "black" : "red"}
-        >
-          Password
-        </FormLabel>
-        <Input
-          type="password"
-          borderColor="#ddd"
-          mb={!errors.password ? 7 : 0}
-          minW="250px"
-          {...register("password", {
-            required: "Password is missing.",
-            minLength: {
-              value: 6,
-              message: "Password too short.",
-            },
-            maxLength: {
-              value: 16,
-              message: "Password too long.",
-            },
-          })}
-        />
-        <FormErrorMessage>
-          {errors.password && errors.password.message}
-        </FormErrorMessage>
-      </FormControl>
-      <Button
-        mt={4}
-        colorScheme="blue"
-        type="submit"
-        isDisabled={!isValid}
-        isLoading={isLoading}
-      >
-        Login
-      </Button>
-    </Flex>
+          Login
+        </Button>
+        <Flex align="center" w="100%" py={4}>
+          <Text>Não tem cadastro?</Text>
+          <Button alignSelf="flex-end" variant="link" mx={2} lineHeight="base">
+            Crie sua conta!
+          </Button>
+        </Flex>
+      </Container>
+    </Center>
   );
 };
 
