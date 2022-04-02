@@ -1,7 +1,7 @@
 import { Flex, Text } from "@chakra-ui/react";
 import { MessageType } from "../../interface/MessageType";
 import { UserType } from "../../interface/UserType";
-import useChatStore from "../../useChatStore";
+import useChatStore from "../../stores/useChatStore";
 
 const Chat: React.FC<{
   chatId: string;

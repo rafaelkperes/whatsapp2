@@ -1,14 +1,14 @@
 import { Flex, Text } from "@chakra-ui/react";
 import type { NextPage } from "next";
-import LoginForm from "../components/auth/loginForm";
-import ChatList from "../components/chat/chatList";
-import ChatMessages from "../components/chat/chatMessages";
+import LoginForm from "../components/auth/LoginForm";
+import ChatList from "../components/chat/ChatList";
+import ChatMessages from "../components/chat/ChatMessages";
 import Header from "../components/header";
 import { ChatType } from "../interface/ChatType";
 import Main from "../layouts/Main";
-import useStore from "../store";
+import useStore from "../stores/store";
 import { user1 } from "../mocks";
-import useChatStore from "../useChatStore";
+import useChatStore from "../stores/useChatStore";
 
 const Home: NextPage = () => {
   const { chatList } = useStore();

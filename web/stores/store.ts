@@ -1,8 +1,8 @@
 import create from "zustand";
-import { ChatType } from "./interface/ChatType";
-import { MessageType } from "./interface/MessageType";
+import { ChatType } from "../interface/ChatType";
+import { MessageType } from "../interface/MessageType";
 
-import { userChats } from "./mocks";
+import { userChats } from "../mocks";
 
 export type Store = {
   chatList: ChatType[];

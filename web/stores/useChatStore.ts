@@ -8,7 +8,7 @@ export type ChatStore = {
 
 const useChatStore = create<ChatStore>((set) => ({
   isOpen: false,
-  chatId: "",
+  chatId: "12312312",
   toggleChat: (chatId) => {
     set((state) => ({
       ...state,
